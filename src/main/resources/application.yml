@@ -1,0 +1,17 @@
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    password: 123
+    username: root
+    url: jdbc:mysql://localhost:3306/shop
+  thymeleaf:
+    cache: false
+mybatis:
+  mapper-locations: classpath:com/qf/dao/*.xml
+  type-aliases-package: com.qf.entity
+mapper:
+  mappers: tk.mybatis.mapper.common.Mapper
+  identity: mysql
+goods:
+  imagePath: D:/picture/image/

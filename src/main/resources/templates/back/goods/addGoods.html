@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="css/backstyle.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+    <!-- 引入uploadfive的css -->
+    <link rel="stylesheet" type="text/css" href="js/uploadify/uploadifive.css"/>
+    <!-- 引入uploadfive的js -->
+    <script src="js/uploadify/jquery.uploadifive.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+       /** 添加商品的时候上传图片的操作*/
+       //页面加载的时候触发这个事件，把所有的大类和每个大类下面对应的小类都显示出来
+        $(function() {
+
+            var bigSelect = $("#bigSelect");
+            var smallSelect = $("#smallSelect");
+            bigSelect.change(function(){
+                $.post("back/GoodsTypeServlet?action=querySmallTypeListByBigId",{"id":$("#bigSelect").val()},function(data){
+                    //得到后端 返回的 json字符串数据[{},{}]
+                    //把json字符串转成对象
+                    var array = eval(data);
+                    var str;
+                    for(var i=0;i<array.length;i++){
+                        str+="<option value="+array[i].id+">"+array[i].gtype_name+"</option>";
+                    }
+                    smallSelect.html(str);
+                })
+            })
+
+
+             //layui中上传图片的操作
+            $('#file_upload').uploadifive({
+              //上传地址参数
+                'uploadScript' : 'upload/image1',
+                //上传后是否移除这个队列
+                'removeCompleted' : true,
+                //上传文件的名字
+                'buttonText'   : '文件上传',
+                'multi': true ,
+                'fileSizeLimit': '100kb',
+                //以什么名字上传到服务器上.. 保存到$_FILES. 默认的名字为 'Filedata'
+              //'fileObjName' :  'file_upload',
+                //回调的函数
+                'onUploadComplete' : function(file, data) {
+                    alert(data);
+
+                    $("#img").attr("src",data);
+                    $("#goodsPic").val(data);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">表单</a></li>
+    </ul>
+</div>
+
+<div class="formbody">
+
+    <div class="formtitle"><span>添加商品信息</span></div>
+    <form action="goods/addGoods" method="post">
+        <ul class="forminfo">
+            <li><label>商品名称</label><input name="goodsName" type="text" class="dfinput" /><i>标题不能超过30个字符</i></li>
+            <li><label>所属大类</label>
+                <select name="goods_parentid" id="bigSelect">
+                    <option value="null">请选择</option>
+                    <!--<c:forEach items="${gtList}" var="big">
+                        <c:if test="${big.gtype_parentid eq '0'}">
+                            <option value="${big.id}">${big.gtype_name}</option>
+                        </c:if>
+                    </c:forEach>-->
+                </select>
+
+            </li>
+            <li><label>所属小类</label>
+                <select name="goods_fatherid" id="smallSelect">
+                    <option value="null">请选择</option>
+
+                </select>
+            </li>
+            <li>
+                <label>商品图片</label>
+                <input id="file_upload" name="file_upload"  />
+                <img  alt="" id="img"/>
+                <input type="hidden" name="goodsPic" id="goodsPic" value="" />
+
+            </li>
+            <li><label>商品价格</label><input name="goodsPrice" type="text" class="dfinput" /></li>
+            <li><label>商品折扣</label><input name="goodsDiscount" type="text" class="dfinput" />折</li>
+            <li><label>商品优惠价</label><input name="goodsPriceOff" type="text" class="dfinput" /></li>
+            <li><label>商品描述</label><textarea rows="8" cols="40" name="goodsDescription" >ddddddd</textarea></li>
+            <li><label>商品库存</label><input name="goodsStock" type="text" class="dfinput" /></li>
+            <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+        </ul>
+
+    </form>
+</div>
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>

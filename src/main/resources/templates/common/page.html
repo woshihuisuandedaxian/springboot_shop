@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--为了能在thymeleaf的页面中引用，fragment后面的变量可以任意命名-->
+<div th:fragment="pageDivthy">
+    <!--<base th:href="${#request.getContextPath()+'/'}"/>-->
+    <!-- 引入layui的css文件 -->
+    <link rel="stylesheet" href="layui/css/layui.css" media="all"/>
+    <!-- 引入layui的js文件 -->
+    <script src="layui/layui.js"></script>
+    <!-- 这个div用来显示分页导航条的 -->
+    <div id="pageDiv"></div>
+    <script>
+        // 初始化分页导航条
+        layui.use('laypage', function() {
+            var laypage = layui.laypage;
+
+            // JS中获取域对象中的值，为了能够在页面中点击下一页和跳转页面时，动态的跳转和显示
+            var total = [[${page.total}]];
+            var limit = [[${page.pageSize}]];
+            var pageNum = [[${page.pageNum}]];
+            var url = "[[${url}]]"; //url外面要加双引号
+            laypage.render({
+                elem : 'pageDiv' // 存放导航条的容器的ID
+                ,count : total // 总条数
+                ,limit : limit  //每页显示条数
+                ,curr: pageNum // 当前页
+                ,layout : [ 'prev', 'page', 'next', 'limit', 'count' ]
+                ,limits:[1,3,5,10]
+
+
+                ,jump : function(obj, first) { // 切换分页的回调
+                    console.log(obj)
+                    if (!first) {
+                        // 查询切换页面的数据
+                        location.href=url+"?pageNum="+obj.curr+"&pageSize="+obj.limit;
+
+                    }
+                }
+            });
+
+        });
+    </script>
+</div>
+</body>
+</html>

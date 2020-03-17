@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="css/backstyle.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+</head>
+<body>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">表单</a></li>
+    </ul>
+</div>
+
+<div class="formbody">
+
+    <div class="formtitle"><span>修改商品信息</span></div>
+    <form action="goods/modifyGoods" method="post">
+        <input type="hidden" name="id" th:value="${goodInfo.id}"/>
+        <ul class="forminfo">
+            <li><label>商品名称</label><input name="goodsName" th:value="${goodInfo.goodsName}"  type="text" class="dfinput" /><i>标题不能超过30个字符</i></li>
+            <li><label>所属大类</label>
+                <select name="goodsParentid">
+                    <option value="0">无</option>
+                    <div th:each="big :${gtList}" th:if="${big.gtypeParentid ==0}">
+                         <div th:switch="${big.id}">
+                            <option th:case="${goodInfo.goodsParentid}" th:value="${big.id}" selected="selected" th:text="${big.gtypeName}"></option>
+                            <option th:case="*" th:value="${big.id}" th:text="${big.gtypeName}"></option>
+                         </div>
+
+                    </div>
+                    <!--<c:forEach items="${gtList}" var="big">
+                        <c:if test="${big.gtype_parentid eq '0'}">
+                            <c:choose>
+                                <c:when test="${big.id eq goodInfo.goods_parentid}">
+                                    <option value="${big.id}" selected="selected">${big.gtype_name}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${big.id}">${big.gtype_name}</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+
+                    </c:forEach>-->
+                </select>
+
+                </i></li>
+            <li><label>所属小类</label>
+                <select name="goodsFatherid">
+                    <option value="0">无</option>
+                    <div th:each="small :${gtList}" th:if="${small.gtypeParentid ne 0}">
+                        <div th:switch="${small.id}">
+                            <option th:case="${goodInfo.goodsFatherid}" th:value="${small.id}" selected="selected" th:text="${small.gtypeName}"></option>
+                            <option th:case="*" th:value="${small.id}" th:text="${small.gtypeName}"></option>
+                        </div>
+
+                    </div>
+
+                   <!-- <c:forEach items="${gtList}" var="small">
+                        <c:if test="${small.gtype_parentid ne '0'}">
+                            <c:choose>
+                                <c:when test="${small.id eq goodInfo.goods_fatherid}">
+                                    <option value="${small.id}" selected="selected">${small.gtype_name}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${small.id}">${small.gtype_name}</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+
+                    </c:forEach>-->
+                </select>
+                </i></li>
+            <li><label>商品价格</label><input name="goodsPrice" type="text" class="dfinput" th:value="${goodInfo.goodsPriceOff}"/><i>标题不能超过30个字符</i></li>
+            <li><label>商品图片</label>
+                <input id="file_upload" name="file_upload" />
+                <img th:src="|images/${goodInfo.goodsPic}|" alt="" id="img"/>
+                <!--<input type="hidden" name="goods_pic" id="goods_pic" value="${goodInfo.goods_pic}" />-->
+            </li>
+            <li><label>商品描述</label><textarea rows="8" cols="40" name="goodsDescription" th:text="${goodInfo.goodsDescription}"></textarea><i>标题不能超过30个字符</i></li>
+            <li><label>商品库存</label><input name="goodsStock" type="text" class="dfinput" th:value="${goodInfo.goodsStock}" /><i>标题不能超过30个字符</i></li>
+            <li><label>&nbsp;</label><input name="" type="submit" class="btn" value="确认保存"/></li>
+        </ul>
+
+    </form>
+</div>
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>

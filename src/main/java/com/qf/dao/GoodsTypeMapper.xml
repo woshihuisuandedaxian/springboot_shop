@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.IGoodsTypeMapper">
+  <resultMap id="BaseResultMap" type="com.qf.entity.GoodsType">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gtype_name" jdbcType="VARCHAR" property="gtypeName" />
+    <result column="gtype_parentid" jdbcType="INTEGER" property="gtypeParentid" />
+    <result column="gtype_pic" jdbcType="VARCHAR" property="gtypePic" />
+  </resultMap>
+  <!--添加商品类别-->
+  <insert id="addGoodsType">
+     insert into t_goods_type (gtype_name,gtype_parentid) VALUES (#{gtypeName},#{gtypeParentid})
+  </insert>
+</mapper>

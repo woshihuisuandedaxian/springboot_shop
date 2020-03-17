@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.IOrderMapper">
+  <!--订单的映射器-->
+  <resultMap id="BaseResultMap" type="com.qf.entity.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="o_sendtype" jdbcType="VARCHAR" property="oSendtype" />
+    <result column="o_paytype" jdbcType="VARCHAR" property="oPaytype" />
+    <result column="o_paycount" jdbcType="DOUBLE" property="oPaycount" />
+    <result column="o_orderdate" jdbcType="DATE" property="oOrderdate" />
+    <result column="o_checkstate" jdbcType="INTEGER" property="oCheckstate" />
+    <result column="o_checkdate" jdbcType="DATE" property="oCheckdate" />
+    <result column="o_checkperson" jdbcType="VARCHAR" property="oCheckperson" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="o_shperson" jdbcType="VARCHAR" property="oShperson" />
+    <result column="o_shphone" jdbcType="VARCHAR" property="oShphone" />
+    <result column="o_shaddress" jdbcType="VARCHAR" property="oShaddress" />
+  </resultMap>
+  <!--实现级联查询的做法-->
+  <resultMap id="BaseResultMap1" type="com.qf.entity.Order" extends="BaseResultMap">
+    <!--property写在order实体类中声明的集合的变量，ofType写多的一方的实体类-->
+    <collection property="orderDetailList" ofType="OrderDetail">
+      <id column="od1_id" jdbcType="INTEGER" property="id" />
+      <result column="o_orderid" jdbcType="INTEGER" property="oOrderid" />
+      <result column="goodsid" jdbcType="INTEGER" property="goodsid" />
+      <result column="goodsname" jdbcType="VARCHAR" property="goodsname" />
+      <result column="goodsprice" jdbcType="DOUBLE" property="goodsprice" />
+      <result column="goods_description" jdbcType="VARCHAR" property="goodsDescription" />
+      <result column="goodsnum" jdbcType="INTEGER" property="goodsnum" />
+      <result column="goodspic" jdbcType="VARCHAR" property="goodspic" />
+      <result column="goods_total_price" jdbcType="DOUBLE" property="goodsTotalPrice" />
+    </collection>
+
+  </resultMap>
+  <!--查询订单和订单详情集合，级联查询-->
+  <select id="getOrderList" resultMap="BaseResultMap1">
+     SELECT
+	    t1.*,od1.*, od1.id as od1_id
+
+  FROM
+	 t_order_detail1 od1
+  INNER JOIN t_order1 t1 ON (
+	 t1.id = od1.o_orderid
+	AND  t1.userid = #{id}
+)
+
+  </select>
+   <!--添加订单-->
+  <insert id="addOrder">
+     insert into t_order1 (id,o_sendtype,o_paytype,o_paycount,userid,o_shperson,o_shphone,o_shaddress)VALUES (
+     #{id},#{oSendtype},#{oPaytype},#{oPaycount},#{userid},#{oShperson},#{oShphone},#{oShaddress}
+     )
+  </insert>
+  <!--&lt;!&ndash;根据用户id查询订单集合&ndash;&gt;
+  <select id="getOrderList" resultMap="BaseResultMap">
+      select * from t_order1 where userid=#{id}
+  </select>-->
+</mapper>

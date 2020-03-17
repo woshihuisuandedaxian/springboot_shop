@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.ICartMapper">
+  <resultMap id="BaseResultMap" type="com.qf.entity.Cart">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gid" jdbcType="INTEGER" property="gid" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="sub_Total" jdbcType="DOUBLE" property="subTotal" />
+    <result column="create_Time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <!--根据用户id查询购物车集合-->
+  <select id="getCartListByUId" resultMap="BaseResultMap">
+     select * from t_cart where uid=#{id}
+  </select>
+  <!--根据商品id查询购物车对象-->
+   <select id="getCartByGid" resultMap="BaseResultMap">
+       select * from t_cart where gid=#{goodId}
+   </select>
+</mapper>

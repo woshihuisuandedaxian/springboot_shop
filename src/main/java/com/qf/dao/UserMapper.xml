@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.dao.IUserMapper">
+  <resultMap id="BaseResultMap" type="com.qf.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="regist_date" jdbcType="DATE" property="registDate" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="codes" jdbcType="VARCHAR" property="codes" />
+    <result column="isadmin" jdbcType="VARCHAR" property="isadmin" />
+    <result column="lockstate" jdbcType="INTEGER" property="lockstate" />
+  </resultMap>
+  <!--根据用户名和密码进行登录验证-->
+  <select id="checkLogin" resultMap="BaseResultMap">
+        select * from t_user where user_name=#{userName} and pwd=#{pwd}
+  </select>
+  <!--根据用户名和密码和是否是管理员查询后天用户-->
+  <select id="backLogin" resultMap="BaseResultMap" >
+      select * from t_user where user_name=#{userName} and pwd=#{pwd} and isadmin='是'
+  </select>
+</mapper>
